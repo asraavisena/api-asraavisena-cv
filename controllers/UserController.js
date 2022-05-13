@@ -18,7 +18,52 @@ class UserController {
       delete payload.password;
       res
         .status(httpStatus.StatusCodes.CREATED)
-        .json(resHelpers.success("success create an user", payload));
+        .json(resHelpers.success("Success create an user", payload));
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async getDetails(req, res, next) {
+    const { id } = req.user;
+    try {
+      const findUser = await User.findByPk(id);
+
+      const result = { ...findUser.dataValues };
+      delete result.password;
+      res
+        .status(httpStatus.StatusCodes.OK)
+        .json(resHelpers.success("Success fetch data", result));
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  static async update(req, res, next) {
+    const { id } = req.user;
+    const payload = {
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      email: req.body.email,
+    };
+
+    try {
+      const findUser = await User.findByPk(id);
+      if (!findUser) {
+        throw { name: "Not Found", message: "User is not found" };
+      }
+
+      const updateUser = await User.update(payload, {
+        where: { id },
+        returning: true,
+        individualHooks: true,
+      });
+
+      res
+        .status(httpStatus.StatusCodes.OK)
+        .json(resHelpers.success("User has been updated", updateUser[1]));
     } catch (error) {
       console.log(error);
       next(error);
