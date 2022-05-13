@@ -24,13 +24,12 @@ async function errorHandler(error, req, res, next) {
         .status(httpStatus.StatusCodes.NOT_FOUND)
         .json(resHelpers.failed(error.message, error.name));
       break;
-    case "ValidationError":
+    case "SequelizeUniqueConstraintError":
+    case "SequelizeValidationError":
       const keyError = Object.keys(error.errors);
       res
         .status(httpStatus.StatusCodes.BAD_REQUEST)
-        .json(
-          resHelpers.failed(error._message, error.errors[keyError].message)
-        );
+        .json(resHelpers.failed(error.errors[keyError].message, error.name));
       break;
     case "TokenExpiredError":
       res
