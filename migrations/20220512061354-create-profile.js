@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       profileDescription: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       githubLink: {
         type: Sequelize.STRING,

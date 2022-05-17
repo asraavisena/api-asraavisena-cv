@@ -15,6 +15,7 @@ router.post("/register", UserController.register);
 
 const routerListBackoffice = {
   "/user": "backoffice/user",
+  "/profile": "backoffice/profile",
 };
 
 // ADMIN AUTH

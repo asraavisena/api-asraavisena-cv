@@ -28,9 +28,9 @@ class UserController {
   static async getDetails(req, res, next) {
     const { id } = req.user;
     try {
-      const findUser = await User.findByPk(id);
+      const findUser = await User.findByPk(id, { raw: true });
 
-      const result = { ...findUser.dataValues };
+      const result = { ...findUser };
       delete result.password;
       res
         .status(httpStatus.StatusCodes.OK)
